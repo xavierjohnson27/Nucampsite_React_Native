@@ -5,7 +5,7 @@ import { Card, Icon, Input, Rating } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite,postComment } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -16,7 +16,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    postFavorite: campsiteId => (postFavorite(campsiteId))
+    postFavorite: campsiteId => (postFavorite(campsiteId)),
+    postComment: (campsiteId,rating,author,text) => (postComment(campsiteId,rating,author,text))
 };
 
 function RenderCampsite(props) {
@@ -105,7 +106,7 @@ class CampsiteInfo extends Component {
 
     handleComment(campsiteId) {
         this.toggleModal();
-        console.log(JSON.stringify(this.state));
+        this.props.postComment(campsiteId, this.state.rating, this.state.author, this.state.text);
     }
 
     resetForm() {
@@ -168,7 +169,9 @@ class CampsiteInfo extends Component {
                     />
                     <View style={{margin: 10 }}>
                         <Button
-                            onPress={() => {this.handleComment(campsiteId); this.resetForm();}}
+                            onPress={() => {
+                                this.handleComment(campsiteId)
+                                this.resetForm();}}
                             color='#5637DD'
                             title='Submit'
                         />
@@ -206,4 +209,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampsiteInfo);
+export default connect(mapStateToProps, mapDispatchToProps,postComment({campsiteId, rating, author, text}))(CampsiteInfo);

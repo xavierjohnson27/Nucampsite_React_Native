@@ -1,5 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
+import thunk from 'redux-thunk';
+import { comments } from './comments';
 
 export const fetchComments = () => dispatch => {
     return fetch(baseUrl + 'comments')
@@ -152,3 +154,34 @@ export const addFavorite = campsiteId => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: campsiteId
 });
+
+export const postComment = (campsiteId,rating,author,text) => {
+    
+
+    date= [date.getMonth(), date.getDate(), date.getFullYear()];
+    const newComment = {
+        campsiteId,
+        rating,
+        author,
+        text  
+    };
+
+    
+    
+    newComment.date = new Date()
+    setTimeout(() => {
+        dispatch(addComment(newComment));
+    }, 2000);
+
+
+};
+
+export const addComment = comment => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload:comments
+});
+
+export const deleteFavorite = campsiteId => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: campsiteId
+}); 
